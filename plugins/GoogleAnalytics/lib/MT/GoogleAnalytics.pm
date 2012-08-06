@@ -5,7 +5,7 @@ use warnings;
 
 use HTTP::Request;
 use XML::Simple;
-use Net::Google::AuthSub;
+use HTTP::Request::Common;
 
 sub new {
     my $class = shift;
@@ -32,9 +32,7 @@ sub init {
     $this->{ username } = $analytics_username;
     $this->{ password } = $analytics_password;
 
-    my $auth = Net::Google::AuthSub->new( service => 'analytics' );
-    $this->{ auth } = $auth;
-    $this->{ ua } = $auth->{ _ua };
+    $this->{ ua } = $arg{ ua } || MT->new_ua;
 
     return $this;
 }
@@ -49,7 +47,7 @@ sub get_report {
     }
     
     my $profile_id = $this->{ profile_id } or return 0;
-    my $url = 'https://www.google.com/analytics/feeds/data?'
+    my $url = 'https://www.googleapis.com/analytics/v2.4/data?'
         .'ids=ga:' . $profile_id
         .'&dimensions=ga:date'
         .'&metrics=ga:' . $type
@@ -59,7 +57,7 @@ sub get_report {
 
     my $req = HTTP::Request->new( GET => $url );
     $req->content_type( 'application/atom+xml' );
-    my $auth_params = $this->{ auth }->auth_params;
+    my $auth_params = $this->{ auth };
     $req->header( 'Authorization' => $auth_params );
     
     my $res = $this->{ ua }->request( $req );
@@ -82,28 +80,41 @@ sub login {
     return 0 unless $username;
     return 0 unless $password;
 
-    my $response = $this->{ auth }->login( $username, $password );
-
+    my $auth_url = 'https://www.google.com/accounts/ClientLogin';
+    my $req = HTTP::Request::Common::POST(
+        $auth_url,
+        [
+            accountType => 'GOOGLE',
+            Email => $username,
+            Passwd => $password,
+            service => 'analytics',
+        ]
+    );
+    my $ua = $this->{ ua };
+    my $response = $ua->request( $req );
     if ( $response->is_success ) {
-        return 1;
-    } else {
-        my $plugin = MT->component( 'GoogleAnalytics' );
-        my $app = MT->instance;
-        MT->log( {
-            message => $plugin->translate( "Cannot login Google Account: '[_1]'", $username ),
-            level => MT::Log::ERROR(),
-            class => 'system',
-            blog_id => $blog_id,
-            author_id => ( $app ? $app->user->id : 0 ),
-            ip => ( $app ? $app->remote_ip : '' ),
-            category => 'googleanalytics_authorication'
-        } ), return 0;
+        if ( $response->content =~ /Auth=([^\s]+)/ ) {
+            $this->{ auth } = "GoogleLogin Auth=$1";
+            $this->{ is_logged_in } = 1;
+            return 1;
+        }
     }
+    my $plugin = MT->component( 'GoogleAnalytics' );
+    my $app = MT->instance;
+    MT->log( {
+        message => $plugin->translate( "Cannot login Google Account: '[_1]'", $username ),
+        level => MT::Log::ERROR(),
+        class => 'system',
+        blog_id => $blog_id,
+        author_id => ( $app ? $app->user->id : 0 ),
+        ip => ( $app ? $app->remote_ip : '' ),
+        category => 'googleanalytics_authorication'
+    } ), return 0;
 }
 
 sub is_logged_in {
     my $this = shift;
-    return $this->{ auth }->authorised;
+    return $this->{ is_logged_in } ? 1 : 0;
 }
 
 1;
