@@ -33,6 +33,7 @@ sub init {
     $this->{ password } = $analytics_password;
 
     $this->{ ua } = $arg{ ua } || MT->new_ua;
+    $this->{ ua }->max_size( undef );
 
     return $this;
 }
