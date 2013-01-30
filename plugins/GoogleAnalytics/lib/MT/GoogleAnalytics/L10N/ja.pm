@@ -18,7 +18,7 @@ our %Lexicon = (
     'Google Analytics Profile ID' => 'Google Analytics<br />プロファイル ID',
 
     # lib/GoogleAnalytics.pm
-    'Cannot login Google Account: \'[_1]\'' => 'Google アカウントにログインできませんでした: [_1]',
+    'Cannot login to Google account: \'[_1]\'' => 'Google アカウントにログインできませんでした: [_1]',
     );
 
 1;

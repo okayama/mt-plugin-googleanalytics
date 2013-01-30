@@ -103,13 +103,13 @@ sub login {
     my $plugin = MT->component( 'GoogleAnalytics' );
     my $app = MT->instance;
     MT->log( {
-        message => $plugin->translate( "Cannot login Google Account: '[_1]'", $username ),
+        message => $plugin->translate( "Cannot login to Google account: '[_1]'", $username ),
         level => MT::Log::ERROR(),
         class => 'system',
         blog_id => $blog_id,
         author_id => ( $app ? $app->user->id : 0 ),
         ip => ( $app ? $app->remote_ip : '' ),
-        category => 'googleanalytics_authorication'
+        category => 'googleanalytics_authorization'
     } ), return 0;
 }
 
