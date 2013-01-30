@@ -4,9 +4,9 @@
 <__trans_section component="GoogleAnalytics">
 <script type="text/javascript">
     /* <![CDATA[ */
-    var slider_variable = '<__trans phrase="Page view" escape="js">';
+    var slider_variable = '<__trans phrase="Page views" escape="js">';
     var slider_variable_singular = '<__trans phrase="Page view" escape="js">';
-    var file_name = '<mt:var name="stat_url" escape="js">';
+    var file_name = '<mt:var name="stat_url">';
 
     var googleAnalytics_pageviewSlider = new FlashTag("<mt:var name="static_uri">flash/date_slider_open.swf?date_range="+date_range+"&file_name="+file_name+"&box_color="+box_color+"&bar_color="+bar_color+"&line_color="+line_color+"&slider_variable="+slider_variable+"&slider_variable_singular="+slider_variable_singular+"&lang=<mt:var name="language_tag">&static_path="+escape(StaticURI+"flash"), 540, 122);
     googleAnalytics_pageviewSlider.setFlashvars("lcId=" + lcId);
@@ -19,11 +19,11 @@
 
 <mt:setvarblock name="tabs" append="1">
 <__trans_section component="GoogleAnalytics">
-        <li id="google_analytics_pageview-tab" class="tab <mt:if name="tab" eq="google_analytics_pageview">selected-tab</mt:if>" mt:tab="google_analytics_pageview" mt:command="select-tab" onclick="return blogStatsTabSelect('google_analytics_pageview');"><a href="javascript:void(0)" ><span><__trans phrase="Page view"></span></a></li>
+        <li id="google_analytics_pageview-tab" class="tab <mt:if name='tab' eq='google_analytics_pageview'>selected-tab</mt:if>" mt:tab="google_analytics_pageview" mt:command="select-tab" onclick="return blogStatsTabSelect('google_analytics_pageview');"><a href="javascript:void(0)" ><span><__trans phrase="Page views"></span></a></li>
 </__trans_section>
 </mt:setvarblock>
 
-    <div id="google_analytics_pageview-panel" class="<mt:unless name="tab" eq="google_analytics_pageview">hidden</mt:unless>" mt:tab-content="google_analytics_pageview">
+    <div id="google_analytics_pageview-panel" class="<mt:unless name='tab' eq='google_analytics_pageview'>hidden</mt:unless>" mt:tab-content="google_analytics_pageview">
         <mt:if name="stat_url">
         <script type="text/javascript">
         /* <![CDATA[ */

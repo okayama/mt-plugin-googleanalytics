@@ -5,8 +5,8 @@
 <script type="text/javascript">
     /* <![CDATA[ */
     var slider_variable = '<__trans phrase="Visitors" escape="js">';
-    var slider_variable_singular = '<__trans phrase="Visitors" escape="js">';
-    var file_name = '<mt:var name="stat_url" escape="js">';
+    var slider_variable_singular = '<__trans phrase="Visitor" escape="js">';
+    var file_name = '<mt:var name="stat_url">';
 
     var googleAnalytics_visitorsSlider = new FlashTag("<mt:var name="static_uri">flash/date_slider_open.swf?date_range="+date_range+"&file_name="+file_name+"&box_color="+box_color+"&bar_color="+bar_color+"&line_color="+line_color+"&slider_variable="+slider_variable+"&slider_variable_singular="+slider_variable_singular+"&lang=<mt:var name="language_tag">&static_path="+escape(StaticURI+"flash"), 540, 122);
     googleAnalytics_visitorsSlider.setFlashvars("lcId=" + lcId);
