@@ -8,7 +8,7 @@ use MT::Util qw( start_end_day epoch2ts format_ts );
 
 use MT::GoogleAnalytics;
 
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 my $plugin = MT::Plugin::GoogleAnalytics->new( {
     id => 'GoogleAnalytics',
